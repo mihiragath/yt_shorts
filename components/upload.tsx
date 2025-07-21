@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { ImageKitProvider, IKImage, IKUpload } from "imagekitio-next";
+import { ImageKitProvider, IKUpload, IKVideo } from "imagekitio-next";
 import { IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload/props";
 import { Progress } from "./ui/progress";
 
@@ -69,17 +69,32 @@ export default function Upload({ setVideoUrl }: UploadProps) {
       urlEndpoint={urlEndpoint}
       authenticator={authenticator}
     >
-      <p>Upload File</p>
+      <p>Upload Video</p>
       <IKUpload
         useUniqueFileName={true}
         validateFile={(file) => file.size < 20 * 1024 * 1024}
-        folder={"/sample-folder"}
+        folder="/shorts"
+        fileName={`short_${Date.now()}`}
+        tags={["shorts"]}
+        accept="video/*"
+        responseFields={["url", "fileId", "name"]}
         onError={onError}
         onSuccess={onSuccess}
         onUploadProgress={onUploadProgress}
         onUploadStart={onUploadStart}
         className="mt-1 block w-full text-sm tex-gray-900 file:mr-4 file:px-4 file:py-2 file:rounded-md"
       />
+
+      {/* Video Preview */}
+      {uploadProgress === 100 && (
+        <div className="mt-4">
+          <video 
+            src={setVideoUrl.toString()} 
+            controls 
+            className="w-[300px] h-[300px] object-contain"
+          />
+        </div>
+      )}
 
       {/* Show progress bar only when upload is in progress  */}
       {uploadProgress !== null && (
