@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/header/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -26,25 +26,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-   <ClerkProvider>
-     <html lang="en" suppressHydrationWarning>
+    <ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="container mx-auto">
-          <Navbar />
-          <ThemeProvider
+        <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-          >
+        >
+          <div className="container mx-auto">
+            <Navbar />
             {children}
-          </ThemeProvider>
-        
-        </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
-   </ClerkProvider>
+    </ClerkProvider>
   );
 }
